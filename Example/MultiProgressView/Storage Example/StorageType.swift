@@ -9,7 +9,8 @@
 import UIKit
 
 enum StorageType {
-    static var allTypes: [StorageType] = [.app, .message, .media, .photo, .mail, .unknown, .other]
+    static var allTypes: [StorageType]
+        = [.app, .message, .media, .photo, .mail, .unknown, .other]
     
     case app
     case message

@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  StorageExampleViewController.swift
 //  MultiProgressView
 //
 //  Created by Mac Gallagher on 7/7/18.
@@ -9,8 +9,8 @@
 import UIKit
 import MultiProgressView
 
-class ViewController: UIViewController {
-    private let backgroundView: UIView = {
+class StorageExampleViewController: UIViewController {
+    private let storageBackgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.borderColor = UIColor.rgb(red: 189, green: 189, blue: 189).cgColor
@@ -28,20 +28,22 @@ class ViewController: UIViewController {
     }()
     
     private let animateButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .system)
         button.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
         button.tag = 1
         button.setTitle("Animate", for: .normal)
         button.setTitleColor(.black, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 18)
         return button
     }()
     
     private let resetButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .system)
         button.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
         button.tag = 2
         button.setTitle("Reset", for: .normal)
         button.setTitleColor(.black, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 18)
         return button
     }()
     
@@ -73,32 +75,36 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 242)
-        view.addSubview(backgroundView)
-        backgroundView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.safeAreaLayoutGuide.leftAnchor, right: view.safeAreaLayoutGuide.rightAnchor, paddingTop: 50)
         
+        setupBackgroundView()
         setupLabels()
         setupProgressBar()
         setupStackView()
         setupButtons()
     }
     
+    private func setupBackgroundView() {
+        view.addSubview(storageBackgroundView)
+        storageBackgroundView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.safeAreaLayoutGuide.leftAnchor, right: view.safeAreaLayoutGuide.rightAnchor, paddingTop: 50)
+    }
+    
     private func setupLabels() {
-        backgroundView.addSubview(iPhoneLabel)
-        iPhoneLabel.anchor(top: backgroundView.topAnchor, left: backgroundView.leftAnchor, paddingTop: padding, paddingLeft: padding)
+        storageBackgroundView.addSubview(iPhoneLabel)
+        iPhoneLabel.anchor(top: storageBackgroundView.topAnchor, left: storageBackgroundView.leftAnchor, paddingTop: padding, paddingLeft: padding)
         
-        backgroundView.addSubview(dataUsedLabel)
-        dataUsedLabel.anchor(top: backgroundView.topAnchor, right: backgroundView.rightAnchor, paddingTop: padding, paddingRight: padding)
+        storageBackgroundView.addSubview(dataUsedLabel)
+        dataUsedLabel.anchor(top: storageBackgroundView.topAnchor, right: storageBackgroundView.rightAnchor, paddingTop: padding, paddingRight: padding)
     }
     
     private func setupProgressBar() {
-        backgroundView.addSubview(progressView)
-        progressView.anchor(top: iPhoneLabel.bottomAnchor, left: backgroundView.leftAnchor, right: backgroundView.rightAnchor, paddingTop: padding, paddingLeft: padding, paddingRight: padding, height: progressViewHeight)
+        storageBackgroundView.addSubview(progressView)
+        progressView.anchor(top: iPhoneLabel.bottomAnchor, left: storageBackgroundView.leftAnchor, right: storageBackgroundView.rightAnchor, paddingTop: padding, paddingLeft: padding, paddingRight: padding, height: progressViewHeight)
         progressView.dataSource = self
     }
     
     private func setupStackView() {
-        backgroundView.addSubview(stackView)
-        stackView.anchor(top: progressView.bottomAnchor, left: backgroundView.leftAnchor, bottom: backgroundView.bottomAnchor, right: backgroundView.rightAnchor, paddingTop: padding, paddingLeft: padding, paddingBottom: padding, paddingRight: padding)
+        storageBackgroundView.addSubview(stackView)
+        stackView.anchor(top: progressView.bottomAnchor, left: storageBackgroundView.leftAnchor, bottom: storageBackgroundView.bottomAnchor, right: storageBackgroundView.rightAnchor, paddingTop: padding, paddingLeft: padding, paddingBottom: padding, paddingRight: padding)
         for type in StorageType.allTypes {
             if type != .unknown {
                 stackView.addArrangedSubview(StorageStackView(storageType: type))
@@ -122,13 +128,13 @@ class ViewController: UIViewController {
                        initialSpringVelocity: 0,
                        options: .curveLinear,
                        animations: {
-            self.progressView.setProgress(section: 0, to: 0.4)
-            self.progressView.setProgress(section: 1, to: 0.15)
-            self.progressView.setProgress(section: 2, to: 0.1)
-            self.progressView.setProgress(section: 3, to: 0.1)
-            self.progressView.setProgress(section: 4, to: 0.05)
-            self.progressView.setProgress(section: 5, to: 0.03)
-            self.progressView.setProgress(section: 6, to: 0.03)
+                        self.progressView.setProgress(section: 0, to: 0.4)
+                        self.progressView.setProgress(section: 1, to: 0.15)
+                        self.progressView.setProgress(section: 2, to: 0.1)
+                        self.progressView.setProgress(section: 3, to: 0.1)
+                        self.progressView.setProgress(section: 4, to: 0.05)
+                        self.progressView.setProgress(section: 5, to: 0.03)
+                        self.progressView.setProgress(section: 6, to: 0.03)
         })
         dataUsedLabel.text = "56.5 GB of 64 GB Used"
     }
@@ -151,7 +157,7 @@ class ViewController: UIViewController {
     }
 }
 
-extension UIViewController: MultiProgressViewDataSource {
+extension StorageExampleViewController: MultiProgressViewDataSource {
     public func numberOfSections(in progressBar: MultiProgressView) -> Int {
         return 7
     }
